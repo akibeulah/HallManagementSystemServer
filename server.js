@@ -13,7 +13,22 @@ import aiRoutes        from './routes/ai.js';
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+const ALLOWED_ORIGINS = [
+  'http://localhost:5173',
+  'http://localhost:4173', // vite preview
+  'https://hallmanagementsystemserver.onrender.com',
+];
+
+app.use(cors({
+  origin(origin, cb) {
+    // Allow server-to-server / curl requests with no Origin header
+    if (!origin) return cb(null, true);
+    if (ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
+    logger.warn(`CORS blocked request from origin: ${origin}`);
+    cb(new Error(`CORS: origin ${origin} not allowed`));
+  },
+  credentials: true,
+}));
 app.use(express.json());
 
 // ── HTTP access log ──────────────────────────────────────────────────────────
