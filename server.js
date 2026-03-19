@@ -15,8 +15,9 @@ const app = express();
 
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',
-  'http://localhost:4173', // vite preview
+  'http://localhost:4173',
   'https://hallmanagementsystemserver.onrender.com',
+  'https://hallmanagementsystemclient.onrender.com',
 ];
 
 app.use(cors({
